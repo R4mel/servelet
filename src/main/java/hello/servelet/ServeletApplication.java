@@ -9,3 +9,5 @@ public class ServeletApplication {
         SpringApplication.run(ServeletApplication.class, args);
     }
 }
+
+// HTTP 강의 80%
