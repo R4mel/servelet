@@ -19,10 +19,8 @@ public class MemberListServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Member> members = memberRepository.findAll();
-
         resp.setContentType("text/html");
         resp.setCharacterEncoding("utf-8");
-
         PrintWriter w = resp.getWriter();
         w.write("<html>");
         w.write("<head>");
