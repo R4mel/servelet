@@ -1,5 +1,7 @@
 package hello.servelet.web.frontcontroller.v5;
 
+import hello.servelet.web.frontcontroller.ModelView;
+import hello.servelet.web.frontcontroller.MyView;
 import hello.servelet.web.frontcontroller.v3.controller.MemberFormControllerV3;
 import hello.servelet.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servelet.web.frontcontroller.v3.controller.MemberSaveControllerV3;
@@ -28,9 +30,9 @@ public class FrontControllerV5 extends HttpServlet {
     }
 
     private void initHandlerMappingMap() {
-        handlerMappingMap.put("/front-controller/v3/members/new-form", new MemberFormControllerV3());
-        handlerMappingMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
-        handlerMappingMap.put("/front-controller/v3/members", new MemberListControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
     }
 
     private void initHandlerAdapters() {
@@ -47,16 +49,12 @@ public class FrontControllerV5 extends HttpServlet {
 
         MyHandlerAdapter adapter = getHandlerAdapter(handler);
 
+        ModelView mv = adapter.handle(response, request, handler);
 
-        // paramMap
-//
-//        Map<String, String> paramMap = createParamMap(request);
-//        ModelView mv = controller.process(paramMap);
-//
-//        String viewName = mv.getViewName(); // 논리이름 new-form
-//        MyView view = viewResolver(viewName);
-//
-//        view.render(mv.getModel(), request, response);
+        String viewName = mv.getViewName();
+        MyView view = viewResolver(viewName);
+
+        view.render(mv.getModel(), request, response);
     }
 
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
@@ -71,5 +69,9 @@ public class FrontControllerV5 extends HttpServlet {
     private Object getHandler(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         return handlerMappingMap.get(requestURI);
+    }
+
+    private static MyView viewResolver(String viewName) {
+        return new MyView("/WEB-INF/views/" + viewName + ".jsp");
     }
 }
